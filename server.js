@@ -4,13 +4,12 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY;
 
 app.use(cors());
 app.use(express.json());
 
-// تقديم ملف الـ HTML مباشرة من المسار الرئيسي
+// تقديم ملف الـ HTML
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -19,7 +18,7 @@ const SYSTEM_PROMPT = `
 إنت "كريم وهيب"، شاب مصري ابن بلد صايع وذكي.
 1. الذاكرة: افتكر سياق الكلام ورد عليه.
 2. الأسلوب: عامية مصرية شعبية صايعة جداً.
-3. التفاعل: رد دغري بدون مقدمات زي "بولع سيجارة".
+3. التفاعل: رد دغري بدون مقدمات.
 4. الشخصية: ردود كوميدية، قصف جبهة، وفهلوة مصرية أصلية.
 `;
 
@@ -44,4 +43,11 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Vercel بيحتاج تصدير التطبيق
+module.exports = app;
+
+// للتشغيل المحلي فقط
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
