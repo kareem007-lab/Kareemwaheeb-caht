@@ -1,2 +1,0 @@
-# Kareemwaheeb-caht
-Funny chat
